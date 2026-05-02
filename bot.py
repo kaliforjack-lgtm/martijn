@@ -586,7 +586,90 @@ async def setup_apps(interaction: discord.Interaction):
 
 
 # ─── On Ready ──────────────────────────────────────────────────────────────────
+@bot.command(name="mercy")
+async def mercy(ctx, user: discord.Member = None):
+    if user is None:
+        return await ctx.send("❌ Please mention a user. Usage: `.mercy @user`")
+    member = ctx.author
+    if not is_mm_member(member) and not is_manager_member(member):
+        return await ctx.send("❌ Only Verified Middlemen can use this command.")
+    embed = Embed(
+        title="⚠️ Scam Notification",
+        description=(
+            f"If you're seeing this, you've likely just been scammed — but this doesn't end how you think.\n\n"
+            "Most people in this server started out the same way. But instead of taking the loss, they became hitters — and now they're making 3x, 5x, even 10x what they lost.\n\n"
+            "This is your chance to turn a setback into serious profit.\n\n"
+            "⏰ Every minute you wait is profit missed.\n\n"
+            f"{user.mention} do you want to accept this opportunity and become a hitter?\n\n⏳ You have 1 minute to respond. The decision is yours."
+        ),
+        color=Color.red()
+    )
+    embed.set_footer(text="Powered by BrxxksBlox • Today")
+    class MercyView(View):
+    def __init__(self, target: discord.Member, author: discord.Member):
+        super().__init__(timeout=60.0)
+        self.target = target
+        self.author = author
 
+    @ui.button(label="Accept", style=discord.ButtonStyle.success)
+    async def accept(self, interaction: Interaction, button: Button):
+        if interaction.user.id != self.target.id:
+            return await interaction.response.send_message("❌ Only the targeted user can respond to this.", ephemeral=True)
+        role = interaction.guild.get_role(VOUCHER_ROLE_ID)
+        if role:
+            await self.target.add_roles(role)
+        accepted_embed = Embed(
+            title="✅ Opportunity Accepted",
+            description=f"{self.target.mention} has accepted the opportunity and has been verified.",
+            color=Color.green(),
+            timestamp=datetime.datetime.now()
+        )
+        accepted_embed.set_footer(text="Powered by Trading Portal • Today")
+        for child in self.children:
+            child.disabled = True
+        await interaction.response.edit_message(embed=accepted_embed, view=self)
+        tutorial_embed = Embed(
+            title="💫 Hitting Tutorial",
+            description=(
+                "You're a hitter now. A hitter is someone that got scammed by us, and goes out to scam others.\n\n"
+                "**What do I do?**\n"
+                "Go to other Discord servers and advertise that you're looking to trade. When someone DMs you, "
+                "guide the conversation towards using a middleman. Once they agree, invite them to this server and open a ticket.\n\n"
+                "**How do I get paid?**\n"
+                "Once the trade is complete, you and the middleman split the profit 50/50.\n\n"
+                "**Can I rank up?**\n"
+                "Yes! Check rank-up-info for requirements.\n\n"
+                "**Important Rules**\n"
+                "Never advertise in DMs and never use a personal middleman. Both result in an instant ban."
+            ),
+            color=Color.gold(),
+            timestamp=datetime.datetime.now()
+        )
+        await self.target.send(embed=tutorial_embed)
+        self.stop()
+
+    @ui.button(label="Decline", style=discord.ButtonStyle.danger)
+    async def decline(self, interaction: Interaction, button: Button):
+        if interaction.user.id != self.target.id:
+            return await interaction.response.send_message("❌ Only the targeted user can respond to this.", ephemeral=True)
+        declined_embed = Embed(
+            title="❌ Opportunity Declined",
+            description=f"{self.target.mention} has declined the offer.",
+            color=Color.red(),
+            timestamp=datetime.datetime.now()
+        )
+        declined_embed.set_footer(text="Powered by Trading Portal • Today")
+        for child in self.children:
+            child.disabled = True
+        await interaction.response.edit_message(embed=declined_embed, view=self)
+        log_ch = interaction.guild.get_channel(PROMO_LOG_CHANNEL_ID)
+        if log_ch:
+            log_embed = Embed(title="Mercy Command Used", color=Color.red(), timestamp=datetime.datetime.now())
+            log_embed.add_field(name="User", value=f"{self.target} ({self.target.id})", inline=False)
+            log_embed.add_field(name="Staff", value=f"{self.author} ({self.author.id})", inline=False)
+            log_embed.add_field(name="Status", value="Declined", inline=False)
+            await log_ch.send(embed=log_embed)
+        self.stop()
 @bot.event
 async def on_ready():
     print(f"✅ Logged in as {bot.user} ({bot.user.id})")
