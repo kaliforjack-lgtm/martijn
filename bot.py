@@ -68,7 +68,7 @@ BAN_ROLES   = [ROLE["moderator"], ROLE["head_mod"], ROLE["lead_coord"], ROLE["ad
                1499791073461928096]
 ADMIN_ROLES = [ROLE["admin"], ROLE["head_admin"], ROLE["co_founder"], ROLE["ops_manager"],
                ROLE["chief_exec"], ROLE["director"], ROLE["president"], ROLE["head_staff"]]
-MM_PING     = [ROLE["middleman"]
+MM_PING     = [ROLE["middleman"]]
 
 # Active trade views stored in memory: {message_id: TradeView}
 active_trades: dict = {}
