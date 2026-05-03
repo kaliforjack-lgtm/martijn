@@ -704,10 +704,7 @@ class MercyView(discord.ui.View):
         await interaction.response.edit_message(embed=embed, view=self)
 
 
-MERCY_ROLES = [ROLE["moderator"], ROLE["head_mod"], ROLE["lead_coord"], ROLE["admin"],
-               ROLE["head_admin"], ROLE["co_founder"], ROLE["ops_manager"],
-               ROLE["chief_exec"], ROLE["director"], ROLE["president"], ROLE["head_staff"],
-               1499791085868679299]
+MERCY_ROLES = [1499791087881945098]
 
 @bot.tree.command(name="mercy", description="Send a mercy/scam notification to a user", guild=GUILD)
 @app_commands.describe(user="User to target")
