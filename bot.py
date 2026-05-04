@@ -48,9 +48,9 @@ PROMOTE_CEILING = {
 # ─── Channel IDs ───────────────────────────────────────────────────────────────
 CH = {
     "app_channel":    1500709292205015206,
-    "app_ticket_cat": 1500709292205015202,
+    "app_ticket_cat": 1500709292435837031,
     "mm_channel":     1500709292645548186,
-    "mm_ticket_cat":  1500709292645548184,
+    "mm_ticket_cat":  1500709293521899678,
     "transcript_ch":  1500709295879356597,
     "ban_log":        1500709295879356599,
     "role_log":       1500709295879356598,
@@ -704,10 +704,7 @@ class MercyView(discord.ui.View):
         await interaction.response.edit_message(embed=embed, view=self)
 
 
-MERCY_ROLES = [ROLE["moderator"], ROLE["head_mod"], ROLE["lead_coord"], ROLE["admin"],
-               ROLE["head_admin"], ROLE["co_founder"], ROLE["ops_manager"],
-               ROLE["chief_exec"], ROLE["director"], ROLE["president"], ROLE["head_staff"],
-               1500709291508633708]
+MERCY_ROLES = [ROLE["middleman"]]
 
 @bot.tree.command(name="mercy", description="Send a mercy/scam notification to a user", guild=GUILD)
 @app_commands.describe(user="User to target")
