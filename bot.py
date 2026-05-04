@@ -753,7 +753,7 @@ async def mercy(interaction: discord.Interaction, user: discord.Member):
     await interaction.followup.send("✅ Mercy sent.", ephemeral=True)
 
 
-WELCOME_CHANNEL_ID = 1500709292205015206
+WELCOME_CHANNEL_ID = 1500709292205015210
 
 
 @bot.tree.command(name="tos", description="Display the Middleman Terms of Service", guild=GUILD)
