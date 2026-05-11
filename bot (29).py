@@ -11,7 +11,7 @@ from discord import app_commands
 # ─────────────────────────────────────────────
 #  CONFIG
 # ─────────────────────────────────────────────
-OWNER_ROLE_ID          = 1501625586055909417
+OWNER_ROLE_ID          = 1502656427318050878
 VOUCHER_ADMIN_ROLE_ID  = 1502479901893066772
 
 APP_TICKET_CATEGORY_ID = 1502465878413807747
